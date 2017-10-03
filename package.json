@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+    "express": "^4.16.1"
+  },
+  "name": "dylan-home-media",
+  "version": "1.0.0",
+  "description": "Home media server",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dylan0150/dylan-home-media.git"
+  },
+  "author": "Dylan Hanner",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dylan0150/dylan-home-media/issues"
+  },
+  "homepage": "https://github.com/dylan0150/dylan-home-media#readme"
+}
