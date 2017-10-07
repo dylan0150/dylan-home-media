@@ -3,7 +3,7 @@
     "express": "^4.16.1"
   },
   "name": "dylan-home-media",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Home media server",
   "main": "index.js",
   "devDependencies": {},
@@ -19,5 +19,9 @@
   "bugs": {
     "url": "https://github.com/dylan0150/dylan-home-media/issues"
   },
-  "homepage": "https://github.com/dylan0150/dylan-home-media#readme"
+  "homepage": "https://github.com/dylan0150/dylan-home-media#readme",
+  "keywords": [
+    "media",
+    "server"
+  ]
 }
