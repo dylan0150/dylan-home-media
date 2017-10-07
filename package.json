@@ -1,6 +1,11 @@
 {
   "dependencies": {
-    "express": "^4.16.1"
+    "@uirouter/angularjs": "^1.0.7",
+    "angular": "1.6.6",
+    "bootstrap": "4.0.0-beta",
+    "express": "^4.16.1",
+    "jquery": "^3.2.1",
+    "popper.js": "^1.12.5"
   },
   "name": "dylan-home-media",
   "version": "0.0.1",
