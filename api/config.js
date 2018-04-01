@@ -1,24 +1,32 @@
-const os     = require('os')
-const net    = os.networkInterfaces()
-const dev_ip = '192.168.1.68'
+const fs = require('fs')
 
-exports.webroot = 'www';
+module.exports.webroot = 'www';
 
-let host = {
-	port: 80
+module.exports.host = {
+	local_ip: '192.168.1.68',
+	public_ip: '80.229.29.4',
+	name: 'dylan0150.plus.com',
+	port: 80,
+	secure_port: 443
 };
 
-exports.dev = false;
-
-if ( net.Ethernet != undefined ) {
-	for (var i = net.Ethernet.length - 1; i >= 0; i--) {
-		if (net.Ethernet[i].family == 'IPv4') {
-			host = net.Ethernet[i]
-			if ( host.address == dev_ip ) {
-				host.port   = 8080
-				exports.dev = true
-			}
-		}
+module.exports.db = {
+	auth: {
+		host: 'localhost',
+		user: 'home',
+		password: 'superhomepassword123',
+		database: 'home'
+	},
+	home: {
+		host: 'localhost',
+		user: 'home',
+		password: 'superhomepassword123',
+		database: 'home'
 	}
 }
-exports.host = host
+
+module.exports.security = {
+	//https://certbot.eff.org/#debianstretch-other
+	//https://stackoverflow.com/questions/5998694/how-to-create-an-https-server-in-node-js#14272874
+	aes256: fs.readFileSync(process.cwd()+'/.keys/aes256.txt','UTF-8').replace(/[\s\r\n]/g,'')
+}
