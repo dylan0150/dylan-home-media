@@ -1,6 +1,7 @@
-const crypto      = require('crypto')
-const aes         = require('aes256')
-const uuid        = require('node-uuid')
+const crypto = require('crypto')
+const aes    = require('aes256')
+const uuid   = require('node-uuid')
+const jwt    = require('jsonwebtoken')
 
 const config = require('./config')
 const DB     = require('./db')
@@ -10,28 +11,17 @@ const db = new DB(config.db.auth)
 
 module.exports = {
 
-	createSession: function( uuid ) {
-		/*
-			{
-				user_uuid: "",
-				secret: "",
-				date_created: ""
-			}
-			
-		*/ // -> json encrypted with sha512
+	createToken: function(user_uuid) {
+		let data = {
+			user_uuid   : user_uuid
+		}
+		return sign(data, config.security.jwt, config.session_expires)
 	},
 
-	validateRequest: function(handler, callback) {
-		if ( config.open_urls && config.open_urls.includes( handler.path ) ) {
-			callback(true, 200)
-		}
-		/*
-			decrypt session cookie errors -> callback(false, 400)
-			check cookie hasn't expired -> callback(false, 401)
-			check secret doesn't match stored secret (memcache) -> callback(false, 403)
-			callback(true, 200, (memcache) -> sessionData )
-		*/
-		callback(false, 500)
+	refreshToken: function(token) {
+		let data = this.validateToken(token)
+		if ( decoded == null ) { return null }
+		return createToken( data.user_uuid )
 	},
 
 	encrypt: function(string) {
@@ -53,6 +43,18 @@ module.exports = {
 	validateEmail: function(email_string) {
 		var regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 		return regex.test(email_string)
+	},
+
+	validateToken: function(null) {
+		try {
+			var decoded = jwt.verify( token, config.security.jwt, {
+				algorithms: ["HS512"],
+				maxAge: config.session_expires
+			})
+			return decoded.data
+		} catch (e) {
+			return null
+		}
 	}
 }
 
@@ -62,4 +64,11 @@ function generateRandomString(len) {
 
 function sha512(string, salt) {
 	return crypto.createHmac('sha512', salt).update(string).digest('hex')
+}
+
+function sign(data, secret, expires) {
+	return jwt.sign({data:data}, secret, {
+		algorithm: "HS512",
+		expiresIn: expires
+	})
 }

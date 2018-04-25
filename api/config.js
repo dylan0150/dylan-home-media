@@ -10,6 +10,8 @@ module.exports.host = {
 	secure_port: 443
 };
 
+module.exports.session_expires = 60*60*24
+
 module.exports.db = {
 	auth: {
 		host: 'localhost',
@@ -22,11 +24,18 @@ module.exports.db = {
 		user: 'home',
 		password: fs.readFileSync(process.cwd()+'/.keys/db_home.txt','UTF-8').replace(/[\s\r\n]/g,''),
 		database: 'home'
+	},
+	cache: {
+		host: 'localhost',
+		user: 'home',
+		password: fs.readFileSync(process.cwd()+'/.keys/db_home.txt','UTF-8').replace(/[\s\r\n]/g,''),
+		database: 'home'
 	}
 }
 
 module.exports.security = {
 	//https://certbot.eff.org/#debianstretch-other
 	//https://stackoverflow.com/questions/5998694/how-to-create-an-https-server-in-node-js#14272874
-	aes256: fs.readFileSync(process.cwd()+'/.keys/aes256.txt','UTF-8').replace(/[\s\r\n]/g,'')
+	aes256: fs.readFileSync(process.cwd()+'/.keys/aes256.txt','UTF-8').replace(/[\s\r\n]/g,''),
+	jwt   : fs.readFileSync(process.cwd()+'/.keys/jwt512.txt','UTF-8').replace(/[\s\r\n]/g,'')
 }

@@ -31,4 +31,9 @@ module.exports.init = function(defer) {
 			.column('data', 'text_long', {}, defer.wait())
 			.column('encrypted', 'int_1', {}, defer.wait())
 			.column('date_created', 'datetime', { notnull: true }, defer.wait())
+
+		.table('memcache')
+			.column('key', 'text_long', { notnull: true }, defer.wait())
+			.column('data', 'text_long', {}, defer.wait())
+			.column('date_created', 'datetime', { notnull: true }, defer.wait())
 }
