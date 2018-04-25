@@ -3,10 +3,10 @@ const fs = require('fs')
 module.exports.webroot = 'www';
 
 module.exports.host = {
-	local_ip: '192.168.1.68',
-	public_ip: '80.229.29.4',
-	name: 'dylan0150.plus.com',
-	port: 80,
+	local_ip: '192.168.2.115',
+	public_ip: '148.252.220.10',
+	name: 'no-reverse-dns.metronet-uk.com',
+	port: 8080,
 	secure_port: 443
 };
 
@@ -14,13 +14,13 @@ module.exports.db = {
 	auth: {
 		host: 'localhost',
 		user: 'home',
-		password: 'superhomepassword123',
+		password: fs.readFileSync(process.cwd()+'/.keys/db_home.txt','UTF-8').replace(/[\s\r\n]/g,''),
 		database: 'home'
 	},
 	home: {
 		host: 'localhost',
 		user: 'home',
-		password: 'superhomepassword123',
+		password: fs.readFileSync(process.cwd()+'/.keys/db_home.txt','UTF-8').replace(/[\s\r\n]/g,''),
 		database: 'home'
 	}
 }

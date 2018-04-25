@@ -36,8 +36,8 @@ app.use(function(request, response, next) {
 })
 
 app.options('*',    function(request, response) { response.status(200).end() })
-app.get('/api/*',   function(request, response) { new Handler('/path/', '/api/', request, response, 'get')  })
-app.post('/api/*',  function(request, response) { new Handler('/path/', '/api/', request, response, 'post') })
+app.get('/api/*',   function(request, response) { new Handler(request.originalUrl.replace('/api/','/path/'), request, response, 'get')  })
+app.post('/api/*',  function(request, response) { new Handler(request.originalUrl.replace('/api/','/path/'), request, response, 'post') })
 app.listen(config.host.port, defer.wait())
 
 defer.once('done', function() {

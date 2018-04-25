@@ -2,21 +2,27 @@ const fs     = require('fs')
 const auth   = require('./auth')
 const config = require('./config')
 
-function RequestHandler(path, url, request, response, method) {
+function RequestHandler(path, request, response, method) {
   var self = this;
   console.log("REQ :: "+request.method+" :: "+request.url.split('?')[0])
-	this.path = request.originalUrl.replace(url, path).split('?')[0]
+	this.path = path.split('?')[0]
   try {
     this.endpoint = require('.'+this.path )
   } catch (e) {
     response.status(404).end()
   }
+  this.method   = method
 	this.params   = this.parseParams( request.url )
   this.body     = request.body
 	this.request  = request
 	this.response = response
   this.status   = 200
-  self[method]()
+  auth.validateRequest( this, function(ok, status, sessionData) {
+    self.status = status
+    if ( !ok ) { self.respond(null) }
+    self.sessionData = sessionData
+    self[self.method]()
+  })
 }
 RequestHandler.prototype.get = function() {
   if ( this.params.method ) {

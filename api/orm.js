@@ -60,7 +60,7 @@ ORM.prototype.drop = function(column_name, callback, table_name) {
 	if ( !this.ready_tables[table_name] ) { this.on('ready_table_'+table_name, function(table) { this_orm.drop.call(this_orm, column_name, callback, table_name) }); return this; }
 	if ( typeof column_name == 'undefined' ) {
 		this.ready_tables[table_name] = false
-		this.db.query("DROP TABLE "+mysql.escapeId(table_name), {}, function(error) {
+		this.db.query("DROP TABLE IF EXISTS "+mysql.escapeId(table_name), {}, function(error) {
 			console.log("ORM :: "+arguments[3].sql, error?' :: failed':' :: success')
 			if ( callback instanceof Function ) { callback.apply(null, arguments) }
 		})

@@ -10,51 +10,28 @@ const db = new DB(config.db.auth)
 
 module.exports = {
 
-	login: function(email, password, callback) {
-		db.query("select users_uuid, validated from users_email where data = :email order by id desc", { email: email }, function(error, results, fields, query, connection) {
-			if ( error ) {
-				console.log(error)
-				return callback({ ok: false, reason: "error" })
+	createSession: function( uuid ) {
+		/*
+			{
+				user_uuid: "",
+				secret: "",
+				date_created: ""
 			}
-			if ( results.length == 0 ) {
-				return callback({ ok: false, reason: "email_nomatch" })
-			}
-			if ( !results[0].validated ) {
-				return callback({ ok: false, reason: "email_invalid" })
-			}
-			db.query("select hash, salt, users_uuid from users_password where users_uuid = :uuid order by id desc limit 1", { uuid: results[0].users_uuid }, function(error, results, fields, query, connection) {
-				if ( error || results.length != 1 ) {
-					console.log(error)
-					return callback({ ok: false, reason: "error" })
-				}
-				if ( sha512( password, results[0].salt ) != results[0].hash ) {
-					return callback({ ok: false, reason: "password_nomatch" })
-				}
-				return callback({ ok: true })
-			})
-		})
+			
+		*/ // -> json encrypted with sha512
 	},
 
-	register: function(email, password, callback) {
-		let self = this;
-		let defer = new tk.Deferrer()
-		const uuid = uuid.v4()+"-"+uuid.v1()
-		db.query("select users_uuid, validated from users_email where data = :email order by id desc", { email: email }, function(error, results, fields, query, connection) {
-			if ( error ) {
-				console.log(error)
-				return callback({ ok: false, reason: "error" })
-			}
-			if ( results.length > 0 ) {
-				return callback({ ok: false, reason: "email_existing" })
-			}
-			let hashdata = salthash(password)
-			db.query("insert into users ( uuid, date_created ) values ( :uuid, now() )", { uuid: uuid }, defer.wait())
-			db.query("insert into users_email ( users_uuid, data, priority, date_created ) values ( :uuid, :email, 1, now() )", { uuid: uuid, email: email }, defer.wait())
-			db.query("insert into users_password ( users_uuid, salt, hash, date_created ) values ( :uuid, :salt, :hash, now() )", { uuid: uuid, salt: hashdata.salt, hash: hashdata.hash }, defer.wait())
-			defer.once('done', function() {
-				return callback({ ok: true })
-			})
-		})
+	validateRequest: function(handler, callback) {
+		if ( config.open_urls && config.open_urls.includes( handler.path ) ) {
+			callback(true, 200)
+		}
+		/*
+			decrypt session cookie errors -> callback(false, 400)
+			check cookie hasn't expired -> callback(false, 401)
+			check secret doesn't match stored secret (memcache) -> callback(false, 403)
+			callback(true, 200, (memcache) -> sessionData )
+		*/
+		callback(false, 500)
 	},
 
 	encrypt: function(string) {
