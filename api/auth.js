@@ -45,7 +45,7 @@ module.exports = {
 		return regex.test(email_string)
 	},
 
-	validateToken: function(null) {
+	validateToken: function(token) {
 		try {
 			var decoded = jwt.verify( token, config.security.jwt, {
 				algorithms: ["HS512"],
