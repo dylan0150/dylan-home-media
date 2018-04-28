@@ -13,29 +13,18 @@ module.exports.host = {
 module.exports.session_expires = 60*60*24
 
 module.exports.db = {
-	auth: {
-		host: 'localhost',
-		user: 'home',
-		password: fs.readFileSync(process.cwd()+'/.keys/db_home.txt','UTF-8').replace(/[\s\r\n]/g,''),
-		database: 'home'
-	},
-	home: {
-		host: 'localhost',
-		user: 'home',
-		password: fs.readFileSync(process.cwd()+'/.keys/db_home.txt','UTF-8').replace(/[\s\r\n]/g,''),
-		database: 'home'
-	},
-	cache: {
-		host: 'localhost',
-		user: 'home',
-		password: fs.readFileSync(process.cwd()+'/.keys/db_home.txt','UTF-8').replace(/[\s\r\n]/g,''),
-		database: 'home'
-	}
+	host: 'localhost',
+	user: 'home',
+	password: fs.readFileSync(process.cwd()+'/.keys/db.txt','UTF-8').replace(/[\s\r\n]/g,''),
+	database: 'home'
+}
+module.exports.response_headers = {
+	"Access-Control-Allow-Origin": "*",
+	"Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
 }
 
-module.exports.security = {
+module.exports.keys = {
 	//https://certbot.eff.org/#debianstretch-other
 	//https://stackoverflow.com/questions/5998694/how-to-create-an-https-server-in-node-js#14272874
-	aes256: fs.readFileSync(process.cwd()+'/.keys/aes256.txt','UTF-8').replace(/[\s\r\n]/g,''),
-	jwt   : fs.readFileSync(process.cwd()+'/.keys/jwt512.txt','UTF-8').replace(/[\s\r\n]/g,'')
+	aes: fs.readFileSync(process.cwd()+'/.keys/aes.txt','UTF-8').replace(/[\s\r\n]/g,'')
 }

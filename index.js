@@ -1,47 +1,10 @@
-const http        = require('http')
-const https       = require('https')
+const nbs    = require('nbs_framework')
+const config = require('./api/config')
 
-const crypto      = require('crypto')
-const express     = require('express')
-const aes         = require('aes256')
-const bodyParser  = require('body-parser')
-const uuid        = require('node-uuid')
-const mailer      = require('nodemailer')
-const wellknown   = require('nodemailer-wellknown')
-const jwt         = require('jsonwebtoken')
+const server = new nbs.Server(config)
 
-const auth        = require('./api/auth')
-const config      = require('./api/config')
-const tk          = require('./api/toolkit')
-const Handler     = require('./api/handler')
-const tables      = require('./api/_tables.js')
+server.route("get", "/reset*", require("./reset") )
 
-console.log = function(str) {
-	if ( str ) {
-		var d = new Date()
-		process.stdout.write( tk.parseDate(d)+" :: " )
-	}
-	console.info.apply(null, arguments)
-}
-
-let defer = new tk.Deferrer()
-tables.init(defer)
-
-const app = express()
-
-app.use(express.static(config.webroot))
-app.use(bodyParser.json())
-app.use(function(request, response, next) {
-	response.header("Access-Control-Allow-Origin","*")
-	response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
-	next()
-})
-
-app.options('*',    function(request, response) { response.status(200).end() })
-app.get('/api/*',   function(request, response) { new Handler(request.originalUrl.replace('/api/','/path/'), request, response, 'get')  })
-app.post('/api/*',  function(request, response) { new Handler(request.originalUrl.replace('/api/','/path/'), request, response, 'post') })
-app.listen(config.host.port, defer.wait())
-
-defer.once('done', function() {
-	console.log("SERVER :: Listening on port "+config.host.port)
+server.once("ready", function() {
+	console.log("Ready")
 })
