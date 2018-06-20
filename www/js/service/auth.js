@@ -8,10 +8,7 @@ angular.module('service.auth',[])
         return $http
             .post(hostname+"/login", form, headers)
             .then(function(response) {
-                return response
-            })
-            .catch(function(err) {
-                console.error(err)
+                return response.data
             })
     }
 

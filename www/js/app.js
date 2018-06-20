@@ -19,6 +19,10 @@ angular.module('app',[
             templateUrl: "templates/login.html",
             controller: "loginController"
         })
+        .state('home', {
+            url: '/home',
+            templateUrl: "templates/home.html"
+        })
 
     $urlRouterProvider
         .otherwise('/login')
