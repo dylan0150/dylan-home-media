@@ -1,10 +1,13 @@
-const nbs    = require('nbs_framework')
-const config = require('./api/config')
+const express    = require('express')
+const bodyParser = require('body-parser')
+const plexApi    = require('plex-api')
 
-const server = new nbs.Server(config)
+const app  = express()
+const port = process.argv[2]
 
-server.route("get", "/reset*", require("./reset") )
+app.use(express.static('www'))
+app.use(bodyParser.json())
 
-server.once("ready", function() {
-	console.log("Ready")
+app.listen(port, function() {
+    console.log("listening on port "+port)
 })

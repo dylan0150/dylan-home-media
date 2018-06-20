@@ -1,27 +1,35 @@
 {
   "dependencies": {
-    "nbs_framework": "^0.0.3"
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "plex-api": "^5.2.0"
   },
   "name": "dylan-home-media",
-  "version": "0.0.1",
-  "description": "Home media server",
+  "version": "1.0.0",
   "main": "index.js",
-  "devDependencies": {},
+  "directories": {
+    "test": "test"
+  },
+  "devDependencies": {
+    "mocha": "^5.2.0",
+    "nodemon": "^1.17.5",
+    "opn-cli": "^3.1.0"
+  },
   "scripts": {
-    "test": "node index.js"
+    "test": "./scripts/test",
+    "dev": "./scripts/run-dev",
+    "production": "./scripts/run-production",
+    "start": "npm run production"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dylan0150/dylan-home-media.git"
   },
-  "author": "Dylan Hanner",
+  "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/dylan0150/dylan-home-media/issues"
   },
   "homepage": "https://github.com/dylan0150/dylan-home-media#readme",
-  "keywords": [
-    "media",
-    "server"
-  ]
+  "description": ""
 }

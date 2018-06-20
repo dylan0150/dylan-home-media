@@ -1,0 +1,3 @@
+sass --watch www/css/main.scss:www/css/main.css &
+opn 'http://localhost:8080/' &&
+./node_modules/nodemon/bin/nodemon.js index.js 8080
