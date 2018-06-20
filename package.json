@@ -1,7 +1,6 @@
 {
   "dependencies": {
-    "body-parser": "^1.18.3",
-    "express": "^4.16.3",
+    "nbs_framework": "^0.0.6",
     "plex-api": "^5.2.0"
   },
   "name": "dylan-home-media",
@@ -19,7 +18,8 @@
     "test": "./scripts/test",
     "dev": "./scripts/run-dev",
     "production": "./scripts/run-production",
-    "start": "npm run production"
+    "start": "npm run production",
+    "postinstall": "cd www && yarn install"
   },
   "repository": {
     "type": "git",

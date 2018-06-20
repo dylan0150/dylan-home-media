@@ -1,0 +1,33 @@
+<div class="wrapper">
+    <div class="center-box center-box--sm">
+        <form novalidate name="form.login" ng-submit="submit(form.login, formdata.login)">
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input name="email"
+                    required
+                    class="form-control"
+                    type="email" 
+                    ng-model="formdata.login.email" 
+                    placeholder="Email"
+                    ng-class="{ 'has-error': form.login.email.$invalid && form.login.email.$touched }"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input name="password"
+                    required
+                    class="form-control"
+                    type="password" 
+                    ng-model="formdata.login.password" 
+                    placeholder="Password"
+                    ng-class="{ 'has-error': form.login.password.$invalid && form.login.password.$touched }"
+                >
+            </div>
+
+            <input type="submit" value="Login" class="btn btn-block btn-primary" ng-disabled="form.login.$invalid || loading">
+
+        </form>
+    </div>
+</div>

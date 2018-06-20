@@ -1,13 +1,19 @@
-const express    = require('express')
-const bodyParser = require('body-parser')
-const plexApi    = require('plex-api')
+const nbs     = require('nbs_framework')
+const plexApi = require('plex-api')
+const config  = require('./config')
 
-const app  = express()
-const port = process.argv[2]
+const auth    = new nbs.Auth(config.auth)
+const server  = new nbs.Server(config.server)
 
-app.use(express.static('www'))
-app.use(bodyParser.json())
-
-app.listen(port, function() {
-    console.log("listening on port "+port)
+server.app.use(function(request, response, next) {
+    if ( !config.public_urls.includes(request.url) ) {
+        request.userData = auth.refreshToken( request.cookies['auth'], "aws" )
+        if ( request.userData == undefined || request.userData == null ) {
+            return response.status(403).end()
+        }
+    }
+    
+    next()
 })
+
+server.route('post', '/api/login')
