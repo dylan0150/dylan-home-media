@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "nbs_framework": "^0.0.6",
+    "nbs_framework": "^0.1.2",
     "plex-api": "^5.2.0"
   },
   "name": "dylan-home-media",
