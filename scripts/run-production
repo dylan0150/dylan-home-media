@@ -1,2 +1,0 @@
-sass www/css/main.scss:www/css/main.css &&
-sudo node index.js 80

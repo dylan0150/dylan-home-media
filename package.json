@@ -1,35 +1,31 @@
 {
-  "dependencies": {
-    "nbs_framework": "^0.1.2",
-    "plex-api": "^5.2.0"
-  },
   "name": "dylan-home-media",
   "version": "1.0.0",
+  "description": "",
   "main": "index.js",
-  "directories": {
-    "test": "test"
-  },
-  "devDependencies": {
-    "mocha": "^5.2.0",
-    "nodemon": "^1.17.5",
-    "opn-cli": "^3.1.0"
-  },
   "scripts": {
-    "test": "./scripts/test",
-    "dev": "./scripts/run-dev",
-    "production": "./scripts/run-production",
-    "start": "npm run production",
-    "postinstall": "cd www && yarn install"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dylan0150/dylan-home-media.git"
+    "url": "git+https://github.com/linuxdropout/dylan-home-media.git"
   },
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/dylan0150/dylan-home-media/issues"
+    "url": "https://github.com/linuxdropout/dylan-home-media/issues"
   },
-  "homepage": "https://github.com/dylan0150/dylan-home-media#readme",
-  "description": ""
+  "homepage": "https://github.com/linuxdropout/dylan-home-media#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "imdb-api": "^4.0.2",
+    "node-fetch": "^2.2.0",
+    "pg": "^7.5.0",
+    "readline-sync": "^1.4.9"
+  },
+  "devDependencies": {
+    "sinon": "^6.3.5",
+    "tape": "^4.9.1"
+  }
 }
