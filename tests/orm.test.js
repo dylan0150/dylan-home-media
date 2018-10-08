@@ -81,6 +81,7 @@ test('ORM :: column -> dropcolumn', async t => {
     t.deepEqual(orm.config, test_config)
 
     orm
+        .extension('uuid-ossp')
         .table(`${TEST_TABLE2_NAME}`, 'public', err => {
             t.notOk(err)
         })
