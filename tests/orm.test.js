@@ -17,7 +17,6 @@ const default_config = {
     port: '5432'
 }
 const TEST_TABLE_NAME = `TEST_TABLE_${Date.now()}`
-const TEST_TABLE2_NAME = `TEST_TABLE2_${Date.now()}`
 
 test('ORM :: constructor defaults', t => {
     const orm = new ORM()
@@ -62,9 +61,8 @@ test('ORM :: table -> droptable', async t => {
         .table(`${TEST_TABLE_NAME}`, 'public', err => {
             t.notOk(err)
         })
-        .droptable(`${TEST_TABLE_NAME}`, async err => {
+        .droptable(`${TEST_TABLE_NAME}`, 'public', async err => {
             t.notOk(err)
-            t.end()
 
             try {
                 await orm.query(`SELECT * FROM ${TEST_TABLE_NAME}`)
@@ -74,21 +72,37 @@ test('ORM :: table -> droptable', async t => {
             t.ok(err)
 
             orm.done()
+            t.end()
         })
 })
-test('ORM :: column -> dropcolumn', async t => {
+test('ORM :: full journey', async t => {
     const orm = new ORM(test_config)
     t.deepEqual(orm.config, test_config)
 
     orm
         .extension('uuid-ossp')
-        .table(`${TEST_TABLE2_NAME}`, 'public', err => {
-            t.notOk(err)
-        })
-            .column('id', 'int', {}, err => {
+        .table(`${TEST_TABLE_NAME}`, 'public', err => t.notOk(err))
+            .column('id', 'int', { default: 0, notnull: true }, err => t.notOk(err))
+            .constraint('pk', { column: 'id' }, err => t.notOk(err))
+            .droptable(`${TEST_TABLE_NAME}`, 'public', err => {
                 t.notOk(err)
-                
                 orm.done()
                 t.end()
             })
+
+        .table(`${TEST_TABLE_NAME}_2`, 'public', err => t.notOk(err))
+            .column('id', 'int', { default: 0, notnull: true }, err => t.notOk(err))
+            .column('fk_id', 'int', { default: 0, notnull: true }, err => t.notOk(err))
+            .column('name_1', 'varchar_255', {}, err => t.notOk(err))
+            .column('name_2', 'varchar_255', {}, err => t.notOk(err))
+            .constraint('pk', { column: 'id' }, err => t.notOk(err))
+            .constraint('fk', { column: 'fk_id', reference_table: TEST_TABLE_NAME, reference_column: 'id' }, err => t.notOk(err))
+            .constraint('uq', { columns: ['name_1','name_2'] })
+            .droptable(`${TEST_TABLE_NAME}_2`, 'public', err => {
+                t.notOk(err)
+                orm.done()
+                t.end()
+            })
+
+        
 })
