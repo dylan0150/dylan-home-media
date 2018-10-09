@@ -95,9 +95,9 @@ test('ORM :: full journey', async t => {
             .constraint('uq', { columns: ['name_1', 'name_2'] }, err => t.notOk(err))
 
         .droptable(`${TEST_TABLE_NAME}_2`, 'public', err => t.notOk(err))
-        .droptable(`${TEST_TABLE_NAME}`, 'public', err => {
-            t.notOk(err)
-            orm.done()
-            t.end()
-        })
+        .droptable(`${TEST_TABLE_NAME}`, 'public', err => t.notOk(err))
+
+    await orm.wait()
+    orm.done()
+    t.end()
 })
