@@ -84,9 +84,7 @@ test('ORM :: full journey', async t => {
         .table(`${TEST_TABLE_NAME}`, 'public', err => t.notOk(err))
             .column('id', 'int', { default: 0, notnull: true }, err => t.notOk(err))
             .constraint('pk', { column: 'id' }, err => t.notOk(err))
-            .droptable(`${TEST_TABLE_NAME}`, 'public', err => {
-                t.notOk(err)
-            })
+            .droptable(`${TEST_TABLE_NAME}`, 'public', err => t.notOk(err))
 
         .table(`${TEST_TABLE_NAME}_2`, 'public', err => t.notOk(err))
             .column('id', 'int', { default: 0, notnull: true }, err => t.notOk(err))
@@ -95,10 +93,10 @@ test('ORM :: full journey', async t => {
             .column('name_2', 'varchar_255', {}, err => t.notOk(err))
             .constraint('pk', { column: 'id' }, err => t.notOk(err))
             .constraint('fk', { column: 'fk_id', reference_table: TEST_TABLE_NAME, reference_column: 'id' }, err => t.notOk(err))
-            .constraint('uq', { columns: ['name_1','name_2'] })
-            .droptable(`${TEST_TABLE_NAME}`, 'public', err => t.notOk(err))
+            .constraint('uq', { columns: ['name_1', 'name_2'] }, err => t.notOk(err))
             .droptable(`${TEST_TABLE_NAME}_2`, 'public', err => {
                 t.notOk(err)
+                orm.done()
                 t.end()
             })
 
