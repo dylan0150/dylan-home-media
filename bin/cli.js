@@ -2,49 +2,59 @@ const rls = require('readline-sync')
 const tv  = require(`${__dirname}/../lib/tv`)
 const orm = require(`${__dirname}/../lib/orm`)
 
-class CLI {
+const CLI = {
 
-    static log(...args) {
-        console.log.apply(console, args)
-    }
+    get commands() {
+        const methods = []
 
-    static get commands() {
-        return Object.getOwnPropertyNames(CLI)
-            .filter(method => method.indexOf('run') === 0)
-            .map(method => {
-                return {
+        for (const method in CLI) {
+            if (method.indexOf('run') === 0) {
+                methods.push({
                     method: method,
-                    question: method
-                        .split(/(?=[A-Z])/)
-                        .slice(1)
-                        .join(' ')
-                }
-            })
-    }
-
-    static async commandLoop() {
-        let ok = true
-        while (ok) {
-            let index = rls.keyInSelect(
-                CLI.commands.map(command => command.question),
-                'Welcome to Dylan\'s Home Media Server command line interface, what would you like to do? ',
-                {
-                    guide: false,
-                    cancel: 'Done'
-                }
-            )
-            if (index === -1) break
-            let method = CLI.commands[index].method
-            ok = await CLI[method]()
+                    question: camelCaseToWords(method)
+                })
+            }
         }
-        process.exit()
-    }
+        
+        return methods
+    },
 
-    static async runTest() {
+    async runTest() {
+        await tv.searchSeries('My Hero Academia', { year: 2016 })
+            .then((...args) => console.log(args))
+            .catch(err => console.error(err))
+
+        await tv.searchMovies('The Avengers', { year: 2012 })
+            .then((...args) => console.log(args))
+            .catch(err => console.error(err))
+
         return true
     }
 }
 
-if (require.main === module) CLI.commandLoop()
+async function commandLoop() {
+    let ok = true
+    while (ok) {
+        let index = rls.keyInSelect(
+            CLI.commands.map(command => command.question),
+            'Welcome to Dylan\'s Home Media Server command line interface, what would you like to do? ',
+            {
+                guide: false,
+                cancel: 'Done'
+            }
+        )
+        if (index === -1) break
+        let method = CLI.commands[index].method
+        ok = await CLI[method]()
+    }
+    process.exit()
+}
 
-module.exports = CLI
+function camelCaseToWords(string) {
+    return string
+        .split(/(?=[A-Z])/)
+        .slice(1)
+        .join(' ')
+}
+
+commandLoop()
