@@ -19,6 +19,44 @@ const CLI = {
         return methods
     },
 
+    async runSearchForSeries() {
+        const title = rls.question('What name do you want to search for?\n > ')
+        const { Search: results } = await tv.searchSeries(title)
+
+        const resultIndex = rls.keyInSelect(
+            results.map(res => `${res.Title} (${res.Year})`),
+            'Which of these is a match?\n > ',
+            {
+                guide: false,
+                cancel: 'None'
+            }
+        )
+        const answer = results[resultIndex]
+
+        console.log('You have selected \n', answer)
+
+        return true
+    },
+
+    async runSearchForMovies() {
+        const title = rls.question('What name do you want to search for?\n > ')
+        const { Search: results } = await tv.searchMovies(title)
+
+        const resultIndex = rls.keyInSelect(
+            results.map(res => `${res.Title} (${res.Year})`),
+            'Which of these is a match?\n > ',
+            {
+                guide: false,
+                cancel: 'None'
+            }
+        )
+        const answer = results[resultIndex]
+
+        console.log('You have selected \n', answer)
+
+        return true
+    },
+
     async runTest() {
         await tv.searchSeries('My Hero Academia', { year: 2016 })
             .then((...args) => console.log(args))
@@ -37,7 +75,7 @@ async function commandLoop() {
     while (ok) {
         let index = rls.keyInSelect(
             CLI.commands.map(command => command.question),
-            'Welcome to Dylan\'s Home Media Server command line interface, what would you like to do? ',
+            'Welcome to Dylan\'s Home Media Server command line interface, what would you like to do?\n > ',
             {
                 guide: false,
                 cancel: 'Done'
