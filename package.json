@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/linuxdropout/dylan-home-media#readme",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "imdb-api": "^4.0.2",
     "node-fetch": "^2.2.0",
