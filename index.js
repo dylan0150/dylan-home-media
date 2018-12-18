@@ -13,12 +13,3 @@ app.use(
 )
 
 app.listen(PORT)
-
-app.get('/command', async (req, res) => {
-    const { key, sh } = req.query
-    if (key !== apiKey) return res.status(403).end()
-
-    let err, result = await command(sh).catch(e => err = e)
-    if (err) return res.status(400).send(err).end()
-    return res.status(200).send(result).end()
-})
