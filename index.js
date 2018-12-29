@@ -19,9 +19,7 @@ app.get('/command', (req, res) => {
     if (key !== apiKey) return res.status(403).end()
 
     return command(sh)
-        .then(result => {
-            res.status(200).set('Content-Type', 'text/plain').send(result).end()
-        })
+        .then(result => res.status(200).set('Content-Type', 'text/plain').send(result).end())
         .catch(err => res.status(400).send(err).end())
 })
 
