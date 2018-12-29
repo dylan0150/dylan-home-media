@@ -4,7 +4,7 @@ const fs = require('fs')
 
 const { command } = require('./lib/utils')
 
-const apiKey = fs.readFileSync(`${__dirname}/lib/.keys/api`)
+const apiKey = fs.readFileSync(`${__dirname}/lib/.keys/api`).replace(/\s/g,'')
 const PORT = 80
 
 const app = express()
