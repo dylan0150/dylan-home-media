@@ -1,8 +1,11 @@
-const PORT = 80
 const express = require('express')
 const bodyParser = require('body-parser')
-const apiKey = fs.readFileSync(`${__dirname}/lib/.keys/api`)
+const fs = require('fs')
+
 const { command } = require('./lib/utils')
+
+const apiKey = fs.readFileSync(`${__dirname}/lib/.keys/api`)
+const PORT = 80
 
 const app = express()
 app.use(
