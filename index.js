@@ -5,7 +5,7 @@ const fs = require('fs')
 const { command } = require('./lib/utils')
 
 const apiKey = fs.readFileSync(`${__dirname}/lib/.keys/api`, 'UTF-8').replace(/\s/g,'')
-const PORT = 80
+const PORT = 8080
 
 const app = express()
 app.use(
@@ -19,7 +19,9 @@ app.get('/command', (req, res) => {
     if (key !== apiKey) return res.status(403).end()
 
     return command(sh)
-        .then(res => res.status(200).set('Content-Type', 'text/plain').send(res).end())
+        .then(result => {
+            res.status(200).set('Content-Type', 'text/plain').send(result).end()
+        })
         .catch(err => res.status(400).send(err).end())
 })
 
